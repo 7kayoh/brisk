@@ -2,7 +2,6 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local LOG_PREFIX = "Brisk; "
-local MODULE_CHECK_ERROR = "File \"(REP)\" is not a ModuleScript"
 local EXPECT_GOT = "Argument \"(REP)\" expects type \"(REP)\", got type \"(REP)\""
 
 local Server = script.Parent
@@ -14,9 +13,9 @@ local Maid = require(Shared.Maid)
 local Promise = require(Shared.Promise)
 local Services = require(ServerLibrary.Services)
 
-local function LogInternally(Message)
-    assert(type(Message) == "string", string.gsub(EXPECT_GOT, "(REP)", {"Message", "string", type(Message)}))
-    Logger.new("Internal", script.Name .. ": " .. Message)
+local function LogInternally(message)
+    assert(type(message) == "string", string.gsub(EXPECT_GOT, "(REP)", {"Message", "string", type(message)}))
+    Logger.new("Internal", ("%s : %s"):format(script.Name, message))
 end
 
 local function InitializeEnvironments(module)
