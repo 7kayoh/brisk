@@ -2,17 +2,17 @@ local StarterPlayer = game:GetService("StarterPlayer")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local Client = Parent:FindFirstChild("Client")
-local Shared = Parent:FindFirstChild("Shared")
-local Server = Parent:FindFirstChild("Server")
+local client = script.Parent.Client
+local shared = script.Parent.Shared
+local server = script.Parent.Server
 
-Server.Name = "BriskServer"
-Shared.Name = "BriskShared"
-Client.Name = "BriskClient"
-Server.Parent = ServerScriptService
-Shared.Parent = ReplicatedStorage
-Client.Parent = StarterPlayer.StarterPlayerScripts
+server.Name = "BriskServer"
+shared.Name = "BriskShared"
+client.Name = "BriskClient"
+server.Parent = ServerScriptService
+shared.Parent = ReplicatedStorage
+client.Parent = StarterPlayer.StarterPlayerScripts
 
-require(Server.Runtime.Main)
+require(server.Runtime.Main)
 
 return {}
