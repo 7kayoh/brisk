@@ -2,39 +2,43 @@ local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 local TextService = game:GetService("TextService")
 
-local Services = {}
-local Private = {}
+local services = {}
+local private = {}
 
-function Services.StartsWith(Sample, ComparingWith)
-    assert(type(Sample) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Sample", "string", type(Sample)}))
-    assert(type(ComparingWith) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"ComparingWith", "string", type(ComparingWith)}))
-    return string.sub(Sample, 1, #ComparingWith) == ComparingWith
+function Services.StartsWith(sample, comparingWith)
+    assert(type(sample) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Sample", "string", type(sample)}))
+    assert(type(comparingWith) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"ComparingWith", "string", type(CcmparingWith)}))
+    return string.sub(sample, 1, #comparingWith) == comparingWith
 end
 
-function Services.GetPlayerWithName(Name, ShouldMatchFully)
-    assert(type(Name) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Name", "string", type(Name)}))
+function Services.GetPlayerWithName(name, shouldMatchFully)
+    assert(type(name) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Name", "string", type(name)}))
+    
     for _, player in ipairs(Players:GetPlayers()) do
-        if ShouldMatchFully and Services.StartsWith(player.Name:lower(), Name:lower()) then
+        if ShouldMatchFully and Services.StartsWith(player.Name:lower(), name:lower()) then
             return player
-        elseif player.Name == Name then
+            
+        elseif player.Name == name then
             return player
         end
     end
 end
 
-function Services.GetPlayerWithDisplayName(DisplayName, ShouldMatchFully)
-    assert(type(DisplayName) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Name", "string", type(DisplayName)}))
+function Services.GetPlayerWithDisplayName(displayName, shouldMatchFully)
+    assert(type(displayName) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Name", "string", type(displayName)}))
+    
     for _, player in ipairs(Players:GetPlayers()) do
-        if ShouldMatchFully and Services.StartsWith(player.DisplayName:lower(), DisplayName:lower()) then
+        if shouldMatchFully and Services.StartsWith(player.DisplayName:lower(), displayName:lower()) then
             return player
-        elseif player.DisplayName == DisplayName then
+            
+        elseif player.DisplayName == displayName then
             return player
         end
     end
 end
 
-function Services.SetupPlayerWrapper(Player)
-    assert(typeof(Player) == "player", string.gsub(Private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(Player)}))
+function Services.SetPlayerWrapper(player)
+    assert(typeof(Player) == "player", string.gsub(Private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(player)}))
 
     if not Services.PlayerWrapperList[Player.UserId] then
         Services.PlayerWrapperList[Player.UserId] = {
@@ -47,14 +51,15 @@ function Services.SetupPlayerWrapper(Player)
     end
 end
 
-function Services.GetHumanoid(Player)
-    assert(typeof(Player) == "player", string.gsub(Private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(Player)}))
-    return Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") or nil
+function Services.GetHumanoid(player)
+    assert(typeof(Player) == "player", string.gsub(Private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(player)}))
+    return player.Character and player.Character:FindFirstChildOfClass("Humanoid") 
 end
 
 return setmetatable({}, {
     __index = function(_, Index)
         return Services[Index] or game:GetService(Index)
     end,
+        
     __newindex = Private
 })
