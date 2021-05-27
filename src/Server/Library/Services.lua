@@ -2,20 +2,22 @@ local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 local TextService = game:GetService("TextService")
 
-local services = {}
+local WAIT_FOR_CHILD_TIMEOUT = 15
+
+local Service = {}
 local private = {}
 
-function Services.StartsWith(sample, comparingWith)
-    assert(type(sample) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Sample", "string", type(sample)}))
-    assert(type(comparingWith) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"ComparingWith", "string", type(CcmparingWith)}))
+function Service.StartsWith(sample, comparingWith)
+    assert(type(sample) == "string", string.gsub(private.EXPECT_GOT, "(REP)", {"Sample", "string", type(sample)}))
+    assert(type(comparingWith) == "string", string.gsub(private.EXPECT_GOT, "(REP)", {"ComparingWith", "string", type(CcmparingWith)}))
     return string.sub(sample, 1, #comparingWith) == comparingWith
 end
 
-function Services.GetPlayerWithName(name, shouldMatchFully)
-    assert(type(name) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Name", "string", type(name)}))
+function Service.GetPlayerWithName(name, shouldMatchFully)
+    assert(type(name) == "string", string.gsub(private.EXPECT_GOT, "(REP)", {"Name", "string", type(name)}))
     
     for _, player in ipairs(Players:GetPlayers()) do
-        if ShouldMatchFully and Services.StartsWith(player.Name:lower(), name:lower()) then
+        if shouldMatchFully and Service.StartsWith(player.Name:lower(), name:lower()) then
             return player
             
         elseif player.Name == name then
@@ -24,11 +26,11 @@ function Services.GetPlayerWithName(name, shouldMatchFully)
     end
 end
 
-function Services.GetPlayerWithDisplayName(displayName, shouldMatchFully)
-    assert(type(displayName) == "string", string.gsub(Private.EXPECT_GOT, "(REP)", {"Name", "string", type(displayName)}))
+function Service.GetPlayerWithDisplayName(displayName, shouldMatchFully)
+    assert(type(displayName) == "string", string.gsub(private.EXPECT_GOT, "(REP)", {"Name", "string", type(displayName)}))
     
     for _, player in ipairs(Players:GetPlayers()) do
-        if shouldMatchFully and Services.StartsWith(player.DisplayName:lower(), displayName:lower()) then
+        if shouldMatchFully and Service.StartsWith(player.DisplayName:lower(), displayName:lower()) then
             return player
             
         elseif player.DisplayName == displayName then
@@ -37,29 +39,30 @@ function Services.GetPlayerWithDisplayName(displayName, shouldMatchFully)
     end
 end
 
-function Services.SetPlayerWrapper(player)
-    assert(typeof(Player) == "player", string.gsub(Private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(player)}))
+function Service.SetPlayerWrapper(player)
+    assert(typeof(player) == "player", string.gsub(private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(player)}))
 
-    if not Services.PlayerWrapperList[Player.UserId] then
-        Services.PlayerWrapperList[Player.UserId] = {
-            ["Name"] = Player.Name,
-            ["DisplayName"] = Player.DisplayName,
-            ["UserId"] = Player.UserId,
-
-            ["GetHumanoid"] = Services.GetHumanoid(Player)
+    if not Service.PlayerWrapperList[player.UserId] then
+        Service.PlayerWrapperList[player.UserId] = {
+            Name = player.Name,
+            DisplayName = player.DisplayName,
+            UserId = player.UserId,
+            GetHumanoid = Service.GetHumanoid(player)
         }
     end
 end
 
-function Services.GetHumanoid(player)
-    assert(typeof(Player) == "player", string.gsub(Private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(player)}))
-    return player.Character and player.Character:FindFirstChildOfClass("Humanoid") 
+function Service.GetHumanoid(player)
+    assert(typeof(player) == "player", string.gsub(private.EXPECT_GOT, "(REP)", {"Player", "Player", typeof(player)}))
+
+    local character = player.Character or player.CharacterAdded:Wait()
+    return character:WaitForChild("Humanoid", WAIT_FOR_CHILD_TIMEOUT) 
 end
 
 return setmetatable({}, {
     __index = function(_, Index)
-        return Services[Index] or game:GetService(Index)
+        return Service[Index] or game:GetService(Index)
     end,
         
-    __newindex = Private
+    __newindex = private
 })
