@@ -1,7 +1,3 @@
--- Main.lua
--- @7kayoh
--- The core of Brisk for the server end
-
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
