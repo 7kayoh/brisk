@@ -14,6 +14,11 @@ local Maid = require(Shared.Maid)
 local Promise = require(Shared.Promise)
 local Services = require(ServerLibrary.Services)
 
+local function LogInternally(Message)
+    assert(type(Message) == "string", string.gsub(EXPECT_GOT, "(REP)", {"Message", "string", type(Message)}))
+    Logger.new("Internal", script.Name .. ": " .. Message)
+end
+
 local function InitializeEnvironments(module)
     module.LOG_PREFIX = LOG_PREFIX
     module.EXPECT_GOT = EXPECT_GOT
@@ -24,6 +29,8 @@ local function InitializeEnvironments(module)
     module.Promise = Promise
 end
 
+LogInternally("PreInit")
 InitializeEnvironments(Services)
+LogInternally("AfterInit")
 
 return nil
