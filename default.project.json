@@ -1,0 +1,12 @@
+{
+    "name": "brisk",
+    "tree": {
+      "$className": "DataModel",
+  
+      "ServerScriptService": {
+        "Brisk": {
+          "$path": "src/server"
+        }
+      }
+    }
+  }
