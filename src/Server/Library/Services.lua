@@ -9,7 +9,7 @@ local private = {}
 
 function Service.StartsWith(sample, comparingWith)
     assert(type(sample) == "string", string.gsub(private.EXPECT_GOT, "(REP)", {"Sample", "string", type(sample)}))
-    assert(type(comparingWith) == "string", string.gsub(private.EXPECT_GOT, "(REP)", {"ComparingWith", "string", type(CcmparingWith)}))
+    assert(type(comparingWith) == "string", string.gsub(private.EXPECT_GOT, "(REP)", {"ComparingWith", "string", type(comparingWith)}))
     return string.sub(sample, 1, #comparingWith) == comparingWith
 end
 
