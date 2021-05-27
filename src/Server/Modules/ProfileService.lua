@@ -1977,7 +1977,7 @@ RunService.Heartbeat:Connect(function()
 	end
 end)
 
--- Release all loaded profiles when the server is shutting down:
+-- Relea se all loaded profiles when the server is shutting down:
 coroutine.wrap(function()
 	WaitForLiveAccessCheck()
 	Madwork.ConnectToOnClose(
@@ -1988,7 +1988,7 @@ coroutine.wrap(function()
 			local on_close_save_job_count = 0
 			local active_profiles = {}
 			for index, profile in ipairs(AutoSaveList) do
-				active_profiles[index] = profile
+			 	active_profiles[index] = profile
 			end
 			-- Release the profiles; Releasing profiles can trigger listeners that release other profiles, so check active state:
 			for _, profile in ipairs(active_profiles) do
